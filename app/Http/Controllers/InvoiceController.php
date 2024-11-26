@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
-use App\Models\Order;
-use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    public function generate($orderId)
+    public function getInvoice($orderId)
     {
-        $order = Order::findOrFail($orderId);
+        $invoice = Invoice::where('order_id', $orderId)->first();
 
-        $invoice = Invoice::create([
-            'order_id' => $order->id,
-            'total_amount' => $order->total_amount,
-            'invoice_date' => now(),
-        ]);
+        if (!$invoice) {
+            return response()->json([
+                'message' => 'Invoice not found for the given order ID.',
+            ], 404);
+        }
 
-        return response()->json(['invoice' => $invoice], 201);
+        return response()->json(['invoice' => $invoice], 200);
     }
 }

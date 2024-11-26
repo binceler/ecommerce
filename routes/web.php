@@ -13,4 +13,4 @@ Route::get('/', function () {
 }); */
 
 Route::post('/orders', [OrderController::class, 'store']);
-Route::get('/invoices/{orderId}', [InvoiceController::class, 'generate']);
+Route::get('/invoices/{orderId}', [InvoiceController::class, 'getInvoice']);
